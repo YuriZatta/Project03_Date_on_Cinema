@@ -22,9 +22,9 @@
 - Must have data visualization 
 
 #### A Killer Project Proposal:
-- What is your project is all about
-- What are the three classes (or more), be ready to discuss it's functionality
-- If it's Data Science project, you must provide the link to the data set prior to the project approval
+- What is your project is all about: see Project Description
+- What are the three classes (or more), be ready to discuss it's functionality: see Functional Components
+- If it's Data Science project, you must provide the link to the data set prior to the project approval: see DataSets
 
 #### For the project:
 - Regadless of your what type of application you intend to build it must have a GitHub repo(USE YOUR PERSONAL GITHUB REPO)
@@ -73,6 +73,13 @@ My PostMVP goal here is to create a webpage in which the user can:
 - The home page (if no date from calendar was selected or if no movie/game name was searched) should have a graphic comparing how much money was invested at NBA, FIFA, SuperBowl, Holly Wood, Game Business, Theaters and Netflix since 1980. Making a comparision between them.
 - This page should grab data from IMDb, Rotten Tomatoes, TMDB and any other relevant webpage forums like Kaggle and Data.org.
 
+## DataSets
+
+- TMDb: Api requests
+- IMDb: https://datasets.imdbws.com/
+- Kaggle: https://www.kaggle.com/eliasdabbas/boxofficemojo-alltime-domestic-data?select=boxoffice_august_2019.csv
+- Kaggle: https://www.kaggle.com/igorkirko/wwwboxofficemojocom-movies-with-budget-listed?select=Mojo_budget_update.csv
+- Data World: https://data.world/eliasdabbas/boxofficemojo-alltime-domestic-data
 
 ## Functional Components
 
