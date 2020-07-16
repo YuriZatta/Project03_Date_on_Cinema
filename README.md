@@ -2,40 +2,7 @@
 
 ## Project due date: 7/23/2020, at 5:00 PM EST
 
-#### Your code must:
-- Be properly indented  
-- Be written with semantic Python code  
-- Be commented for the other developers  
-
-#### Standard Python project must:
-- Be a working, interactive, Python application
-- Must consist of GOOD OOP design
-- Must at least 3 classes
-- Must include public, private variables
-- You may use files, or dictionaries as storage unit
-- Must use any third party libraries such as request, PrettyTable, colored
-
-#### Data Science project must:
-- Be a working, interactive, Python application
-- Must include grouping and data aggregation, and standard functions such as max, min, sum, and std etc
-- Must have at least 2 .apply methods()
-- Must have data visualization 
-
-#### A Killer Project Proposal:
-- What is your project is all about: see Project Description
-- What are the three classes (or more), be ready to discuss it's functionality: see Functional Components
-- If it's Data Science project, you must provide the link to the data set prior to the project approval: see DataSets
-
-#### For the project:
-- Regadless of your what type of application you intend to build it must have a GitHub repo(USE YOUR PERSONAL GITHUB REPO)
-- Data Science project must include the dataset in the GitHub repo along with the Jupyter Notebook
-- DO NOT UPLOAD THE PROJECT FILES TO GITHUB, you must push your code the GitHub as you build the application
-
-<hr>
-
 ## Project Schedule
-
-This schedule will be used to keep track of your progress throughout the week and align with our expectations.  
 
 |  Day | Deliverable | Status
 |---|---| ---|
