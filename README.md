@@ -210,15 +210,3 @@ def foo(bar):
 #### SAMPLE.....
 **ERROR**:  Unexpected identifier                                
 **RESOLUTION**: Missing comma after first object in sources {} object
-
-## How to submit project 01
-- Use your own GitHub
-
-In the comment section, you must add the following:
-```text
-* Comfortability [0 to 5]
-* Completeness [0 to 5]
-* What was a win?
-* What was a challenge?
-* Any other comments
-```
