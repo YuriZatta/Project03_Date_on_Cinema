@@ -137,7 +137,7 @@ class Name(DataBase):
 | Cleaning Data Tests | M | 8hr | -hr | -hr|
 | MatPlotLib and other Libraries tests | L | 8H | -hr | -hr|
 | class DataBase() | H | 6hr| -hr | -hr |
-| class Date(DataBase) | H | 6hr | -hr | -hr|
+| class Date(DataBase) | H | 6hr | 6hr | -hr|
 | class Name(DataBase) | H | 6hrs| -hr | -hr |
 | Total | H | 42hrs| -hr | -hr |
 
