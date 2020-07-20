@@ -212,60 +212,83 @@ class Date(DataBase):
         results of 'self.__Pandas_filter()' !!!
         """
         self.__date_input()
+        
         df_plot_full = self.clean_DataSet
         df_cut = self.df_filter
+        
         print('\n')
+        print('It came this far! Graphic_View!')
         print(df_cut)
         print('\n')
         
-        plt.bar(df_cut['budget'], df_plot_full['budget'], label='Title')
-        plt.legend()
-        plt.xlabel("genre_1")
-        plt.ylabel("budget")
+        # displaying the graphics of the specific day searched!
+        df_cut.plot(kind='bar', x='genre_1', y='budget',figsize=(10, 5)).set_title('This day Budget per Genre in Million', fontsize="15", color="red")
+        plt.xlabel('Genre/Title')
+        plt.ylabel('Budget')
         plt.show()
-
-        movies_budget = df_plot_full['budget']
-        movies_genres = df_plot_full['genre_1']
-        x = np.arange(len(df_plot_full['genre_1']))  # the label locations
-        width = 0.35  # the width of the bars
-
-        fig, ax = plt.subplots()
-        rects1 = ax.bar(x - width/2, movies_genres, width, label='Genre')
-        rects2 = ax.bar(x + width/2, movies_budget, width, label='Budget')
-
-        # Add some text for labels, title and custom x-axis tick labels, etc.
-        ax.set_ylabel('Scores')
-        ax.set_title('Scores by group and gender')
-        ax.set_xticks(x)
-        ax.set_xticklabels(labels)
-        ax.legend()
-
-
-        def autolabel(rects):
-            """Attach a text label above each bar in *rects*, displaying its height."""
-            for rect in rects:
-                height = rect.get_height()
-                ax.annotate('{}'.format(height),
-                            xy=(rect.get_x() + rect.get_width() / 2, height),
-                            xytext=(0, 3),  # 3 points vertical offset
-                            textcoords="offset points",
-                            ha='center', va='bottom')
-
-
-        autolabel(rects1)
-        autolabel(rects2)
-
-        fig.tight_layout()
-
-        plt.show()
-
-        # display Pandas df['movies name']['date']
-        # displey genre graphic bar
-        # maybe display BoxOffice graphic bar, but no guarantee
         
-        # plt.plot([1, 2, 3, 4])
-        # plt.ylabel('some numbers')
-        # plt.show()
+        # Function that clean/slice '1990-05-25' into '1990-05'
+        self.clean_DataSet.iloc[0,0].strftime("%Y-%m")
+        def extract_month(month):
+            month = month.strftime("%Y-%m-%d")
+            clean_month = month[0:7]
+            return clean_month
+        
+        # Droping out NaN values to not run into an error!
+        df_plot_full = df_plot_full.dropna(subset=['date', 'genre_1'])
+        
+        
+        # Applying the function to a whole column 'date' and creating a Series from it!
+        date_from_full = pd.Series(df_plot_full['date'].apply(extract_month))
+        date_from_cut = pd.Series(df_cut['date'].apply(extract_month))
+        
+        # Inserting the series into our DFs as a new column Month!
+        df_plot_full.insert(0, "Month", date_from_full)
+        df_cut.insert(0, "Month", date_from_cut)
+        
+        # Filtering out the main DF with the User DF to create a graphics with only that range of time!
+        cut_and_full_df = df_plot_full[df_plot_full.Month.isin(df_cut.Month)]
+        cut_and_full_df.plot(kind='bar', x='genre_1', y='budget',figsize=(10, 5)).set_title('This month Budget per Genre in Million', fontsize="15", color="red")
+        plt.xlabel('Genre')
+        plt.ylabel('Budget in Millions')
+        plt.show()
+        
+        # this input will return which movies were released at the same day¹
+        cut_and_full_df = df_plot_full[df_plot_full.Month.isin(df_cut.Month)]
+        cut_and_full_df.plot(kind='bar', x='title', y='budget',figsize=(10, 5)).set_title('Movies Budgets', fontsize="15", color="red")
+        plt.xlabel('Title')
+        plt.ylabel('Budget in Millions')
+        plt.show()
+        
+        gen_v = cut_and_full_df["genre_1"].value_counts()
+        
+        # and a bar graphic highlighting how many 'titles' per 'genre_1' were released at that period.
+        #cut_and_full_df.groupby('genre_1')['title'].nunique().plot(kind='bar')
+        #plt.show()
+        cut_and_full_df.groupby(['genre_1','title']).size().unstack().plot(kind='bar',stacked=True,figsize=(10, 5)).set_title('Genres per Movies', fontsize="15", color="red")
+        plt.xlabel('Genre')
+        plt.ylabel('Quantity of Movies')
+        plt.show()
+        print(cut_and_full_df["genre_1"].value_counts())
+        
+        a = df_plot_full['budget'].max()
+        z = df_plot_full['budget'].min()
+        
+        df_plot_full.query("budget == @a or budget == @z").groupby(['title','budget']).size().unstack().plot(kind='bar',stacked=True,figsize=(10, 5)).set_title('Highest and Lowest Budgets 1990-2020', fontsize="15", color="red")
+        plt.show()
+
+        # Function that clean/slice '1990-05-25' into '1990'
+        def extract_year(year):
+            year = year.strftime("%Y-%m-%d")
+            clean_year = year[0:5]
+            return clean_year
+        
+        # Applying the function to a whole column 'date' and creating a Series from it!
+        only_year = pd.Series(df_plot_full['date'].apply(extract_year))
+        df_plot_full.insert(0, "year", only_year)
+        # print(df_plot_full.groupby('year')['budget'].mean())
+        df_plot_full.groupby('year')['budget'].mean().plot(kind='line', x='year', y='budget',figsize=(10, 5)).set_title('Mean of budget invested in movies per year 1990-2020', fontsize="15", color="red")
+        plt.show()
         """
         Front Page!
         plt.bar(df_plot['genre_1'],df_plot['budget'], label='Knives Out')
