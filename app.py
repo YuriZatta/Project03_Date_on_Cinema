@@ -5,6 +5,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import tmdbsimple
 import numpy as np
+import os 
 
 class DataBase:
     """
@@ -51,23 +52,32 @@ class DataBase:
         # WITHOUT release date!
         self.__bo_all_19 = 'datasets_boxoffice_alltime_until_august_2019.csv'
 
-    # # def __TMDb_cleaning(self):
-    # #     requests TMDb API
-    # #     Pandas
-    # #     Data Frame
-    # #     pass
+    def __TMDb_cleaning(self):
+        """
+        For future updates!
+        """
+        # requests TMDb API
+        # Pandas
+        # Data Frame
+        pass
 
-    # # def __IMDb_cleaning(self):
-    # #     Requests API
-    # #     Pandas
-    # #     Data Frame
-    # #     pass
+    def __IMDb_cleaning(self):
+        """
+        For future updates!
+        """
+        # Requests API
+        # Pandas
+        # Data Frame
+        pass
 
-    # # def __BOMDb_cleaning(self):
-    # #     Requests API
-    # #     Pandas
-    # #     Data Frame
-    # #     pass
+    def __BOMDb_cleaning(self):
+        """
+        For future updates!
+        """
+        # Requests API
+        # Pandas
+        # Data Frame
+        pass
 
     def BO_DS_cleaning(self):
         """
@@ -101,16 +111,19 @@ class DataBase:
         self.clean_DataSet = bo_df
         return self.clean_DataSet
 
-    # # def __DataSet_generator(self):
-    # #     if Public TMDb, IMDb and BOMDb exists:
-    # #         if Day Date == Today:
-    # #             Pandas
-    # #             Data Set
-    # #     else:
-    # #         Call __private_method_TMDb_cleaning.requests()
-    # #         Pandas
-    # #         DataSet
-    # #     pass
+    def __DataSet_generator(self):
+        """
+        For future updates!
+        """
+        # if Public TMDb, IMDb and BOMDb exists:
+        #     if Day Date == Today:
+        #         Pandas
+        #         Data Set
+        # else:
+        #     Call __private_method_TMDb_cleaning.requests()
+        #     Pandas
+        #     DataSet
+        pass
 
     # #private = property(__BOMDb_cleaning)
 
@@ -216,11 +229,6 @@ class Date(DataBase):
         df_plot_full = self.clean_DataSet
         df_cut = self.df_filter
         
-        print('\n')
-        print('It came this far! Graphic_View!')
-        print(df_cut)
-        print('\n')
-        
         # displaying the graphics of the specific day searched!
         df_cut.plot(kind='bar', x='genre_1', y='budget',figsize=(10, 5)).set_title('This day Budget per Genre in Million', fontsize="15", color="red")
         plt.xlabel('Genre/Title')
@@ -237,8 +245,7 @@ class Date(DataBase):
         # Droping out NaN values to not run into an error!
         df_plot_full = df_plot_full.dropna(subset=['date', 'genre_1'])
         
-        
-        # Applying the function to a whole column 'date' and creating a Series from it!
+        # Applying the above function to a whole column 'date' and creating a Series from it!
         date_from_full = pd.Series(df_plot_full['date'].apply(extract_month))
         date_from_cut = pd.Series(df_cut['date'].apply(extract_month))
         
@@ -248,12 +255,23 @@ class Date(DataBase):
         
         # Filtering out the main DF with the User DF to create a graphics with only that range of time!
         cut_and_full_df = df_plot_full[df_plot_full.Month.isin(df_cut.Month)]
-        cut_and_full_df.plot(kind='bar', x='genre_1', y='budget',figsize=(10, 5)).set_title('This month Budget per Genre in Million', fontsize="15", color="red")
+        
+        #cut_and_full_df.plot(kind='bar', x='genre_1', y='budget',figsize=(10, 5))
+        #plt.xlabel('Genre')
+        #plt.ylabel('Budget in Millions')
+        #plt.show()
+        
+        # Month Budget per Genre in Millions!
+        cut_and_full_df.groupby('genre_1')['budget'].sum().plot(kind='bar',stacked=True,figsize=(10, 5)).set_title('This month Budget per Genre in Million', fontsize="15", color="red")
         plt.xlabel('Genre')
         plt.ylabel('Budget in Millions')
         plt.show()
         
-        # this input will return which movies were released at the same day¹
+        # Month Budget per Genre in Millions WITH STACKED COLLORS!
+        cut_and_full_df.groupby(['genre_1','budget']).size().unstack().plot(kind='bar',stacked=True,figsize=(10, 5)).set_title('This month Budget/Title per Genre in Million', fontsize="15", color="red")
+        plt.show()
+        
+        # How much budget each title spent this month!
         cut_and_full_df = df_plot_full[df_plot_full.Month.isin(df_cut.Month)]
         cut_and_full_df.plot(kind='bar', x='title', y='budget',figsize=(10, 5)).set_title('Movies Budgets', fontsize="15", color="red")
         plt.xlabel('Title')
@@ -262,19 +280,23 @@ class Date(DataBase):
         
         gen_v = cut_and_full_df["genre_1"].value_counts()
         
-        # and a bar graphic highlighting how many 'titles' per 'genre_1' were released at that period.
-        #cut_and_full_df.groupby('genre_1')['title'].nunique().plot(kind='bar')
-        #plt.show()
+        # A bar graphic highlighting how many 'titles' per 'genre_1' were released at this month!
         cut_and_full_df.groupby(['genre_1','title']).size().unstack().plot(kind='bar',stacked=True,figsize=(10, 5)).set_title('Genres per Movies', fontsize="15", color="red")
         plt.xlabel('Genre')
         plt.ylabel('Quantity of Movies')
         plt.show()
-        print(cut_and_full_df["genre_1"].value_counts())
+        #cut_and_full_df.groupby('genre_1')['title'].nunique().plot(kind='bar')
+        #plt.show()
+        #print(cut_and_full_df["genre_1"].value_counts())
         
+        # Highest and Lowest budget Titles!
         a = df_plot_full['budget'].max()
         z = df_plot_full['budget'].min()
         
-        df_plot_full.query("budget == @a or budget == @z").groupby(['title','budget']).size().unstack().plot(kind='bar',stacked=True,figsize=(10, 5)).set_title('Highest and Lowest Budgets 1990-2020', fontsize="15", color="red")
+        df_plot_full.query("budget == @a or budget == @z").groupby(['title','budget']).size().unstack().plot(kind='bar',stacked=True,figsize=(10, 5)).set_title('Highest and Lowest Budgets 1990-2020/04', fontsize="15", color="red")
+        plt.show()
+        
+        df_plot_full.query("budget == @a or budget == @z").plot(kind='scatter', x='title', y='budget',figsize=(10, 5)).set_title('Highest and Lowest Budgets 1990-2020/04', fontsize="15", color="red")
         plt.show()
 
         # Function that clean/slice '1990-05-25' into '1990'
@@ -287,8 +309,18 @@ class Date(DataBase):
         only_year = pd.Series(df_plot_full['date'].apply(extract_year))
         df_plot_full.insert(0, "year", only_year)
         # print(df_plot_full.groupby('year')['budget'].mean())
-        df_plot_full.groupby('year')['budget'].mean().plot(kind='line', x='year', y='budget',figsize=(10, 5)).set_title('Mean of budget invested in movies per year 1990-2020', fontsize="15", color="red")
+        
+        # The mean of each year budget!
+        df_plot_full.groupby('year')['budget'].mean().plot(kind='line', x='year', y='budget',figsize=(10, 5)).set_title('Mean of budget invested in movies per year 1990-2020/04', fontsize="15", color="red")
         plt.show()
+        
+        # The sum of all budgets per year!
+        df_plot_full.groupby('year')['budget'].sum().plot(kind='line', x='year', y='budget',figsize=(10, 5)).set_title('The sum of all budgets invested in movies by year 1990-2020/04', fontsize="15", color="red")
+        plt.show()
+        
+        # The total derivation!
+        #df_plot_full.groupby('year')['budget'].std().plot(kind='line', x='year', y='budget',figsize=(10, 5)).set_title('Movies deviation per year 1990-2020', fontsize="15", color="red")
+        #plt.show()
         """
         Front Page!
         plt.bar(df_plot['genre_1'],df_plot['budget'], label='Knives Out')
@@ -379,6 +411,8 @@ class Name(DataBase):
                     # Exit the loop if success!
                     break
                 else:
+                    self.input_name = name
+                    self.__collecting_missing_names(self.input_name)
                     print("\nMaybe this isn't in our database, try one movie released between the 90's and April 2020!\n")
             except ValueError: 
                 print("\nSorry, I didn't understand that.\nCan you try again?")
@@ -409,7 +443,38 @@ class Name(DataBase):
             better_method.graphic_view()
 
     
+    def __collecting_missing_names(self,name):
+        self.m_name = name
+        try:
+            missing_name_file_path = 'needed_names.csv'
+            isFile = os.path.isfile(missing_name_file_path)
+            does_it_exist = isFile
+            if does_it_exist:
+                self.__update_file(self.m_name)
+                print('\n\tFile Updated!\n')
+            else:
+                self.__new_file(self.m_name)
+                print("\n\tFile Created!\n")
+        except ValueError: 
+            print("\nPROBLEM WITH MISSING FILE NAME\n")
+            
+    def __new_file(self,name):
+        missing_name = name
+        try:
+            with open('needed_names.csv', 'w') as f:
+                f.write("%s;\n"%(missing_name))
+            f.close()
+        except IOError:
+            print('\nFile could not Update!\n')
 
+    def __update_file(self,name):
+        missing_name = name
+        try:
+            with open('needed_names.csv', 'a') as f:
+                f.write("%s;\n"%(missing_name))
+            f.close()
+        except IOError:
+            print('\nFile could not Update!\n')
 
 # '21 November 2019'
 # '2019-11-21'
