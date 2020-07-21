@@ -8,8 +8,8 @@
 |---|---| ---|
 |Day 1| Project Description | Complete
 |Day 1| Priority Matrix / Timeline | Complete
-|Day 3| Core Application | Incomplete
-|Day 4| MVP & Bug Fixes | Incomplete
+|Day 3| Core Application | Complete
+|Day 4| MVP & Bug Fixes | Complete
 |Day 5| Final Touches | Incomplete
 |Day 6| Deploy to GitHub | Incomplete
 
@@ -133,13 +133,13 @@ class Name(DataBase):
 #### MVP
 | Component | Priority | Estimated Time | Time Invested | Actual Time |
 | --- | :---: |  :---: | :---: | :---: |
-| Data Base Reaserch | H | 8hr | 24hr | -hr|
-| Cleaning Data Tests | M | 8hr | -hr | -hr|
-| MatPlotLib and other Libraries tests | L | 8H | -hr | -hr|
-| class DataBase() | H | 6hr| -hr | -hr |
-| class Date(DataBase) | H | 6hr | 6hr | -hr|
-| class Name(DataBase) | H | 6hrs| -hr | -hr |
-| Total | H | 42hrs| -hr | -hr |
+| Data Base Reaserch | H | 8hr | 24hr | 32hr|
+| Cleaning Data Tests | M | 8hr | 8hr | 16hr|
+| MatPlotLib and other Libraries tests | L | 8H | 9hr | 17hr|
+| class DataBase() | H | 6hr| 4hr | 10hr |
+| class Date(DataBase) | H | 6hr | 6hr | 12hr|
+| class Name(DataBase) | H | 6hrs| 5hr | 11hr |
+| Total | H | 42hrs| 56hr | 98hr |
 
 #### PostMVP
 | Component | Priority | Estimated Time | Time Invested | Actual Time |
@@ -161,19 +161,69 @@ class Name(DataBase):
  - tmdbsimple
 
 ## Code Snippet
-Use this section to include a brief code snippet of functionality that you are proud of an a brief description  
+It's not fancy, but I'm proud of comming up with this idea of how to deal with the users input. First it checks if the name inputed is in our DataBase, if it isn't it'll check if the user pressed enter by mistake, and finally, if the user haven't pressed enter without input, nor given any know name to us, we will active a method that will save the inputed name in another .csv file. This unlock a loop that will never let the code crash by wrong input! This will also allow us in the future to decide how to deal with half complete names inputs, and a class that requests only the missing names from APIs and lately add up to our data. It'll also help us in future updates to create a class that analizes which are the most searched names and have a grasp of what kind of titles interest people the most!
 
 ```python
-def foo(bar):
-    pass
+    DataBase.BO_DS_cleaning(self)
+    df = self.clean_DataSet 
+    while True:
+        try:
+            name = input("\nWhat movie name do you want to analize?\nExample: Die Hard 2, or Get Out\n\tType one name here->")
+            does_it_exist = df.isin([name]).any().any()
+            if does_it_exist:
+                self.input_name = name
+                # Exit the loop if success!
+                break
+            elif name == '':
+                name = None
+                self.input_name = name
+                # Exit the loop if success!
+                break
+            else:
+                self.input_name = name
+                self.__collecting_missing_names(self.input_name)
+                print("\nMaybe this isn't in our database, try one movie released between the 90's and April 2020!\n")
+        except ValueError: 
+            print("\nSorry, I didn't understand that.\nCan you try again?")
+            # let's try again without breaking the code...
+            continue
 ```
 
 ## Issues and Resolutions
 
- - For now my biggest problem is the availability of DataSets and what they include, e.g. 'year 2018' instead of the full date '01/01/2018'.
-
- - My second problem that I'm predicting is that some DataSets, like TMDb give more than one genre per movie, e.g. 'Matrix: Action, Science-Fiction'. And I'm not sure the most correct approach to deal with that when analizing the data and returning a minimalistic visual graphic of it.
+ - The idea is to collect a very specific date input from the user, Year-Month-Day, after that we can provide analizes from the very specific day, then for that specific month, and later for the year. To do so, one simple way would be to using slicing! It's easier to cut out what we have that it is to create from 0 when needed. But slicing Pandas DateTime (TimeStamp) objects / columns are not so easy. For almost every attempt I run into some type of wrong object type operation, fortunatly, the following code fixed the issue.
 
 #### SAMPLE.....
-**ERROR**:  Unexpected identifier                                
-**RESOLUTION**: Missing comma after first object in sources {} object
+**ERROR**:  TimeStamp does not support str slicing                                
+**RESOLUTION**: 
+```python
+# Function that clean/slice '1990-05-25' into '1990-05'
+self.clean_DataSet.iloc[0,0].strftime("%Y-%m")
+def extract_month(month):
+    month = month.strftime("%Y-%m-%d")
+    clean_month = month[0:7]
+    return clean_month
+
+# Droping out NaN values to not run into an error!
+df_plot_full = df_plot_full.dropna(subset=['date', 'genre_1'])
+
+# Applying the above function to a whole column 'date' and creating a Series from it!
+date_from_full = pd.Series(df_plot_full['date'].apply(extract_month))
+date_from_cut = pd.Series(df_cut['date'].apply(extract_month))
+
+# Inserting the series into our DFs as a new column Month!
+df_plot_full.insert(0, "Month", date_from_full)
+df_cut.insert(0, "Month", date_from_cut)
+
+# Filtering out the main DF with the User DF to create a graphics with only that range of time!
+cut_and_full_df = df_plot_full[df_plot_full.Month.isin(df_cut.Month)]
+```
+
+## Persistent Issues 
+
+ - For now my biggest problem is the availability of DataSets and what they include, e.g. 'year 2018' instead of the full date '01/01/2018'. Or having data for 'budget' but not for 'revenue', nor 'release date' at all. This enforces me to drop more movies titles that I would like to do.
+
+ - My second problem that I'm predicting is that some DataSets, like TMDb, give more than one genre per movie, e.g. 'Matrix: Action, Science-Fiction'. And I'm not sure what should be the most correct approach to deal with that when analizing the data and returning a minimalistic visual graphic of it.
+
+ - Like the issues above, we relly on community and other API users to provide and correct the data already collected. Which means that sometimes, if we collect the data using requests, if someone is updating information of these particular data aswell, we might collect half-provided data, which will crash the code that I have designed to iterate over each Movie ID from key [0] to [-1] of the API json.
+
