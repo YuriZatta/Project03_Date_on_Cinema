@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 import tmdbsimple
 import numpy as np
 import os 
+import colored
 
 class DataBase:
     """
@@ -24,6 +25,7 @@ class DataBase:
     --> TMDb stands for The Movie DataBase.org
     --> IMDb stands for the famous IMDb
     --> BOMDb stands for BoxOffice Mojo DataBase
+    --> DS for DataSet and DF for DataFrame
     """
     """
     For now, our app relys on this single dataset ('BoxOffice 90's - 2020') 
@@ -58,7 +60,6 @@ class DataBase:
         """
         # requests TMDb API
         # Pandas
-        # Data Frame
         pass
 
     def __IMDb_cleaning(self):
@@ -67,7 +68,6 @@ class DataBase:
         """
         # Requests API
         # Pandas
-        # Data Frame
         pass
 
     def __BOMDb_cleaning(self):
@@ -76,7 +76,6 @@ class DataBase:
         """
         # Requests API
         # Pandas
-        # Data Frame
         pass
 
     def BO_DS_cleaning(self):
@@ -125,18 +124,18 @@ class DataBase:
         #     DataSet
         pass
 
-    # #private = property(__BOMDb_cleaning)
 
 class Date(DataBase):
     """
     This child Class from 'class DataBase()' asks the user input using
-    the '__date_input()', and with the input provided by the user
-    the '__Pandas_filter()' will uses Pandas to iterate over the public 
+    the '__date_input()'. And, with the input provided by the user
+    the '__Pandas_filter()' will use Pandas to iterate over the public 
     self.clean_DataSet from the Parent Class, using the 'date' column as
-    a filter with the '.query()' method. All of this is activated by the
-    'graphic_view()' public method, this calls for the other 2, and with
-    what they return 'graphic_view()' will pass the DataFrame values to
-    MatPlotLib built-in methods to display a graphic view! 
+    a filter with the '.query()' method. 
+    All of this is activated by the 'graphic_view()' public method, this
+    method calls for the other two (__date and __filter), and with what 
+    they return, 'graphic_view()' will pass the DataFrame values to
+    MatPlotLib built-in methods to display the graphics! 
     """
     
     def __Pandas_filter(self,date = None):
@@ -151,10 +150,10 @@ class Date(DataBase):
         
         DataBase.BO_DS_cleaning(self)
         df = self.clean_DataSet 
-        # print(df)
+        
         # Die Hard 2 release date in U.S.
         default_date = '1990-07-06'
-        # this format was the only one that manage to work, link beneath
+        # this format was the only one that worked for me, link beneath
         date = default_date if date is None else date
         # https://stackoverflow.com/questions/52494128/call-function-without-optional-arguments-if-they-are-none
         try:
@@ -297,6 +296,7 @@ class Date(DataBase):
         plt.show()
         
         df_plot_full.query("budget == @a or budget == @z").plot(kind='scatter', x='title', y='budget',figsize=(10, 5)).set_title('Highest and Lowest Budgets 1990-2020/04', fontsize="15", color="red")
+        plt.legend(['budget','title'])
         plt.show()
 
         # Function that clean/slice '1990-05-25' into '1990'
@@ -312,22 +312,18 @@ class Date(DataBase):
         
         # The mean of each year budget!
         df_plot_full.groupby('year')['budget'].mean().plot(kind='line', x='year', y='budget',figsize=(10, 5)).set_title('Mean of budget invested in movies per year 1990-2020/04', fontsize="15", color="red")
+        plt.legend()
         plt.show()
         
         # The sum of all budgets per year!
         df_plot_full.groupby('year')['budget'].sum().plot(kind='line', x='year', y='budget',figsize=(10, 5)).set_title('The sum of all budgets invested in movies by year 1990-2020/04', fontsize="15", color="red")
+        plt.legend()
         plt.show()
         
         # The total derivation!
         #df_plot_full.groupby('year')['budget'].std().plot(kind='line', x='year', y='budget',figsize=(10, 5)).set_title('Movies deviation per year 1990-2020', fontsize="15", color="red")
         #plt.show()
-        """
-        Front Page!
-        plt.bar(df_plot['genre_1'],df_plot['budget'], label='Knives Out')
-        plt.xlabel("genre_1")
-        plt.ylabel("budget")
-        plt.show()
-        """
+
 
 class Name(DataBase):
     """
@@ -493,137 +489,6 @@ b.graphic_view()
 # b.Testardor_input()
 
 n = Name()
-n.name_input()
+#n.name_input()
 # n.exists_input()
 
-# """
-# Similar to the 'Date.__Pandas_filter()' version, this one takes
-# the value returned by 'name_input()', and instead of filtering
-# by 'date', it'll filter by 'name' using the 'title' column.
-# It'll also assume that if the value of 'name' provided by 
-# 'name_input()' is None, the 'Default Name' to check should be of
-# the movie Get Out, returning a result anyway instead of break.
-# """
-
-# dead matplotlib method codes:
-    # print('\n')
-    # print('\n\t this is the graphic_view working!')
-    # print(df_plot_full['title'].head(1))
-    # print('\n')
-    # print('\tprinted by the df_filter\n')
-    # print(self.df_filter)
-    # print('\n')
-    # print('\tThis is the matplot time to work!\n')
-    # df_knives_gen = df_plot_full[df_plot_full['title'] == 'Knives Out']['genre_1']
-    # df_knives_bud = df_plot_full[df_plot_full['title'] == 'Knives Out']['budget']
-
-    # df_21_gen = df_plot_full[df_plot_full['title'] == '21 Bridges']['genre_1']
-    # df_21_bud = df_plot_full[df_plot_full['title'] == '21 Bridges']['budget']
-
-    # df_t_min = df_plot_full[df_plot_full['budget'] == df_plot_full['budget'].min()]['budget']
-    # df_t_max = df_plot_full[df_plot_full['budget'] == df_plot_full['budget'].max()]['budget']
-    
-    # 
-    
-    # # print(df_knives_gen)
-    # # print(df_knives_bud)
-    # # print('\n')
-    # # print(df_21_gen)
-    # # print(df_21_bud)
-    # # print(df_t_min)
-    # # print(df_t_max)
-    # print(df_cut)
-    # print(self.clean_DataSet.head(5))
-    # mask_1 = df_plot_full['date'] == self.date
-
-# def __date_input(self,date=None):
-    # """
-    # This method uses a While Loop to ask the User for a valid input,
-    # if the user cannot meet the creterea of typing the date asked in
-    # the '21 November 2019, or 2019-11-21' formats, the loop will
-    # keep asking the User to try again. This formats are the ones
-    # accepted by Pandas built-in method '.to_datetime()', which was
-    # used to convert the 'date' column inside our DataFrame, and will
-    # be used again to validate the users input!
-    # The provided input will be assigned as 'self.input_date' and 
-    # this method will call for 'self.__Pandas_filter()' passing the
-    # input as an argument! 
-    # Besides that, if the user by mistake hits 'enter' without 
-    # providing anything, the input will be seen as 'None' and passed 
-    # to the 'self.__Pandas_filter()' method anyway, activating it's
-    # Default Date value.
-    # """
-    # while True:
-    #     try:
-    #         date = input("\nWhat date do you want to analize?\nExample: 21 November 2019, or 2019-11-21\n\tType one style here->")
-            
-    #         if date == '':
-    #             date = None
-    #             self.input_date = date
-    #         else:
-    #             self.input_date = pd.to_datetime(date)
-    #     except ValueError:
-    #         print("\nSorry, I didn't understand that.\nExemples of valid formats are:\n21 November 2019 or 2019-11-21")
-    #         #better try again... Return to the start of the loop!
-    #         continue
-    #     else:
-    #         # date was successfully given!
-    #         # we're ready to exit the loop.
-    #         break
-    
-    # # self.input_date = pd.to_datetime(date)
-    # self.__Pandas_filter(self.input_date)
-
-# def exists_input(self,name=None):
-    #         DataBase.BO_DS_cleaning(self)
-    #         df = self.clean_DataSet 
-    #         while True:
-    #             try:
-    #                 name = input("\nWhat movie name do you want to analize?\nExample: Die Hard 2, or Get Out\n\tType one name here->")
-    #                 does_it_exist = df.isin([name]).any().any()
-    #                 if does_it_exist:
-    #                     self.input_name = str(name)
-    #                     print('Done 1')
-    #                     break
-    #                 elif name == '':
-    #                     name = None
-    #                     self.input_name = name
-    #                     print('Done NONE!')
-    #                     break
-    #                 else:
-    #                     print("\nMaybe this isn't in our database, try one movie released between the 90's and April 2020!\n")
-    #             except ValueError: 
-    #                 print("\nSorry, I didn't understand that.\nCan you try again?")
-                    
-    #                 continue
-            # while True:
-            #     try:
-            #         name = input("\nWhat movie name do you want to analize?\nExample: Die Hard 2, or Get Out\n\tType one name here->")
-                    
-            #         if name == '':
-            #             name = None
-            #             self.input_name = name
-            #         else:
-            #             self.input_name = str(name)
-            #     except ValueError:
-            #         print("\nSorry, I didn't understand that.\nCan you try again?")
-            #         #better try again... Return to the start of the loop
-            #         continue
-            #     else:
-            #         # date was successfully parsed!
-            #         # we're ready to exit the loop.
-            #         break
-            
-            
-            # self.__Pandas_filter(self.input_name)
-
-            # df_name = self.df_name_filter
-            
-            # if len(df_name.index) > 1:
-            #     print('It should have duplicateds!')
-                
-            #     print("\nPlease, choose one of the dates and insert next!\n")
-            #     better_method = Date()
-            #     better_method.graphic_view()
-            # else:
-            #     print(df_name[['title', 'date', 'budget']])
