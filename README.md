@@ -10,8 +10,8 @@
 |Day 1| Priority Matrix / Timeline | Complete
 |Day 3| Core Application | Complete
 |Day 4| MVP & Bug Fixes | Complete
-|Day 5| Final Touches | Incomplete
-|Day 6| Deploy to GitHub | Incomplete
+|Day 5| Final Touches | Complete
+|Day 6| Deploy to GitHub | Complete
 
 ## Future web link!
 [Yuri's Project]() 
