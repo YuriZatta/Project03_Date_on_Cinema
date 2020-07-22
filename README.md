@@ -22,7 +22,7 @@ Project DateOnCinema Data Analizes!
 
 ### MVP
 
-First I'm creating a Python Data Analizes App inside Jupyter Notebook that will iterate over a dataset of movies released from the 90s until 2017. The app accepts two types of inputs to Analize Data. 
+First I'm creating a Python Data Analizes App that will iterate over a dataset of movies released from the 90s until 2017. The app accepts two types of inputs to Analize Data. 
 - The first option let the user to type a date of the calendar,e.g. 18/05/17, this input will return which movies were released at the same day¹ and a bar graphic highlighting how many movies per genre were released at that period.
 - The second option let the user to type the name of the movie,e.g. Jaws, this input will check how many moviews with duplicated name we have and return to the user a Data Frame with 'name','date' and 'genre' as columns, and each of the movie options per 'row'. Beneath the Data Frame we will have the first option described earlier, so the user can type the date of one of the duplicated names if wanted. 
 
