@@ -3,10 +3,10 @@ import requests
 from datetime import datetime as time
 import pandas as pd
 from matplotlib import pyplot as plt
-import tmdbsimple
+# import tmdbsimple
 import numpy as np
 import os 
-import colored
+# import colored
 
 class DataBase:
     """
@@ -160,6 +160,9 @@ class Date(DataBase):
             self.date = pd.to_datetime(date)
             # print(df.query("date == @self.date"))
             self.df_filter = df.query("date == @self.date")
+            print('\n')
+            print(self.df_filter[['title', 'date', 'budget','genre_1']])
+            print('\n')
             return self.df_filter
         except ValueError:
             print('\nPlease insert a valide date format!\n')
@@ -358,9 +361,12 @@ class Name(DataBase):
         name = default_name if name is None else name
         try:
             self.name = name
-            print('\n')
+            #print('\n')
             #print(df.query("title == @self.name"))
             self.df_name_filter = df.query("title == @self.name")
+            #print('\n')
+            #print(self.df_name_filter[['title', 'date', 'budget','genre_1']])
+            #print('\n')
             return self.df_name_filter
         except ValueError:
             print('\nPlease insert a valide name!\n')
@@ -440,14 +446,46 @@ class Name(DataBase):
 
     
     def __collecting_missing_names(self,name):
+        """
+        This method will work collecting every name inserted by the user
+        that are not in our DataSet, or wasn't understood by our code.
+        This way, we can latter decide what the best 'regex' option to
+        help our code accept short names, e.g. is it okay to use "Harry"
+        to search for the "Harry Potter" francheise? Or people type
+        "Harry Potter" anyway, so should we just filter by that? Because
+        "Harry" alone could let our code bring unnecessery movies.
+        Besides that, we can also use these names to iterate over an API
+        and gradually fill up the gaps of our DataSet, instead of trying
+        to requests all movies at once, requesting only what our users
+        want.
+        And finally, we can create another app just to see what are the
+        words that our users most associate with movies/budgets/profit,
+        and take decisions and analizes over this totally different
+        subject. Either way, this method will be really handy in the
+        future!
+        """
+        """
+        This method will be called inside the 'Try/Except' block of our
+        name_input() method. If the name is not known, this method is
+        called and the user input is passed as an argument for this
+        method.
+        """
+        # user input previously used for name_input() will be reassigned
+        # to self.m_name!
         self.m_name = name
         try:
+            # this is how we will call our .csv file for missing names
             missing_name_file_path = 'needed_names.csv'
+            # this is to check if the file already exists!
             isFile = os.path.isfile(missing_name_file_path)
             does_it_exist = isFile
+            # If exists, call the method 'update_file' which will append
+            # the new data!
             if does_it_exist:
                 self.__update_file(self.m_name)
                 print('\n\tFile Updated!\n')
+            # else, call the method 'new_file' which will write this
+            # new file from scretch!
             else:
                 self.__new_file(self.m_name)
                 print("\n\tFile Created!\n")
@@ -455,6 +493,10 @@ class Name(DataBase):
             print("\nPROBLEM WITH MISSING FILE NAME\n")
             
     def __new_file(self,name):
+        """
+        This is the method that creates a new file for missing names
+        inputs, using 'open(,'write')'!
+        """
         missing_name = name
         try:
             with open('needed_names.csv', 'w') as f:
@@ -464,6 +506,10 @@ class Name(DataBase):
             print('\nFile could not Update!\n')
 
     def __update_file(self,name):
+        """
+        This is the method that updates a new file for missing names
+        inputs, using 'open(,'append')'!
+        """
         missing_name = name
         try:
             with open('needed_names.csv', 'a') as f:
@@ -489,6 +535,6 @@ b.graphic_view()
 # b.Testardor_input()
 
 n = Name()
-#n.name_input()
+n.name_input()
 # n.exists_input()
 
