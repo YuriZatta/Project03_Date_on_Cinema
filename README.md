@@ -1,18 +1,5 @@
 # ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Final Project: Python
 
-## Project due date: 7/23/2020, at 5:00 PM EST
-
-## Project Schedule
-
-|  Day | Deliverable | Status
-|---|---| ---|
-|Day 1| Project Description | Complete
-|Day 1| Priority Matrix / Timeline | Complete
-|Day 3| Core Application | Complete
-|Day 4| MVP & Bug Fixes | Complete
-|Day 5| Final Touches | Complete
-|Day 6| Deploy to GitHub | Complete
-
 ## Future web link!
 [Yuri's Project]() 
 
