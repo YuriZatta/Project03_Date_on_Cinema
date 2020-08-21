@@ -1,4 +1,6 @@
-# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Final Project: Python
+# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Python Final Project: DateOnCinema
+
+![gif](https://media.giphy.com/media/VxbP9tLeKzazm/giphy.gif)
 
 ## Future web link!
 [Yuri's Project]() 
@@ -214,3 +216,4 @@ cut_and_full_df = df_plot_full[df_plot_full.Month.isin(df_cut.Month)]
 
  - Like the issues above, we relly on community and other API users to provide and correct the data already collected. Which means that sometimes, if we collect the data using requests, if someone is updating information of these particular data aswell, we might collect half-provided data, which will crash the code that I have designed to iterate over each Movie ID from key [0] to [-1] of the API json.
 
+![gif](https://media.giphy.com/media/Bzebpz5rnyBb2/giphy.gif)
